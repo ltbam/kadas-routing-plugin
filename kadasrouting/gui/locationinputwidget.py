@@ -49,8 +49,25 @@ class LocationInputWidget(QWidget):
         self.locationSymbolPath = locationSymbolPath
         self.layout = QHBoxLayout()
         self.layout.setMargin(0)
-        self.searchBox = QLineEdit()
-        self.searchBox.textChanged.connect(self.textChanged)
+
+        # Create Kadas search box
+        self.coordinateProvider = KadasCoordinateSearchProvider(self.canvas)
+        self.locationProvider = KadasLocationSearchProvider(self.canvas)
+        self.localDataProvider = KadasLocalDataSearchProvider(self.canvas)
+        self.pinProvider = KadasPinSearchProvider(self.canvas)
+        self.remoteDataProvider = KadasRemoteDataSearchProvider(self.canvas)
+        self.worldProvider = KadasWorldLocationSearchProvider(self.canvas)
+        self.searchBox = KadasSearchBox()
+        self.searchBox.init(self.canvas)
+        self.searchBox.addSearchProvider(self.coordinateProvider)
+        self.searchBox.addSearchProvider(self.locationProvider)
+        self.searchBox.addSearchProvider(self.localDataProvider)
+        self.searchBox.addSearchProvider(self.pinProvider)
+        self.searchBox.addSearchProvider(self.remoteDataProvider)
+        self.searchBox.addSearchProvider(self.worldProvider)
+
+        # TODO: Update the signal and slot
+        # self.searchBox.textChanged.connect(self.textChanged)
         self.layout.addWidget(self.searchBox)
 
         self.btnGPS = QToolButton()
