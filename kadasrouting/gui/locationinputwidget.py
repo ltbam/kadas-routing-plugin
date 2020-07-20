@@ -205,4 +205,4 @@ class LocationInputWidget(QWidget):
         self.searchBox.setText(text)
 
     def clearSearchBox(self):
-        self.setText('')
+        self.searchBox.clearSearch()
