@@ -106,7 +106,7 @@ class LocationInputWidget(QWidget):
     @waitcursor
     def _getGpsConnection(self):
         if self._gpsConnection is None:
-            port = str(QgsSettings().value( "/kadas/gps_port", "" ));
+            port = str(QgsSettings().value( "/kadas/gps_port", "" ))
             gpsDetector = QgsGpsDetector(port)
             loop = QEventLoop()
             def gpsDetected(connection):
@@ -173,7 +173,7 @@ class LocationInputWidget(QWidget):
             transform = QgsCoordinateTransform(inCrs, canvasCrs, QgsProject.instance())
             canvasPoint = transform.transform(point)
             self.searchBox.setStyleSheet("color: black;")
-        except WrongLocationException as e:
+        except WrongLocationException:
             self.searchBox.setStyleSheet("color: red;")
             return
 
@@ -206,4 +206,3 @@ class LocationInputWidget(QWidget):
 
     def clearSearchBox(self):
         self.setText('')
-
