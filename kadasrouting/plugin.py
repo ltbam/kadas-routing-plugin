@@ -4,7 +4,7 @@ import logging
 
 from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import QAction, QWidgetAction, QCheckBox
 
 from qgis.utils import iface
 
@@ -17,6 +17,7 @@ from kadasrouting.core.shortestpathlayer import ShortestPathLayerType
 from kadasrouting.gui.shortestpathbottombar import ShortestPathBottomBar
 from kadasrouting.gui.reachibilitybottombar import ReachibilityBottomBar
 from kadasrouting.gui.tspbottombar import TSPBottomBar
+from kadasrouting.gui.tristateaction import TriStateAction
 
 logfile = os.path.join(os.path.expanduser("~"), ".kadas", "kadas-routing.log")
 try:
@@ -43,6 +44,14 @@ class RoutingPlugin(QObject):
         self.shortestAction.toggled.connect(self.showShortest)
         self.iface.addAction(self.shortestAction, self.iface.PLUGIN_MENU, self.iface.GPS_TAB)
 
+        # Test
+        self.cbx = QCheckBox('Tristate')
+        self.cbxAction = QWidgetAction(self.iface)
+        self.cbxAction.setDefaultWidget(self.cbx)
+        # self.cbxAction.setCheckable(True)
+        # self.cbxAction.toggled.connect(self.showShortest)
+        self.iface.addAction(self.cbxAction, self.iface.PLUGIN_MENU, self.iface.GPS_TAB)
+
         # Reachibility menu
         self.reachabilityAction = QAction(icon("reachibility.png"), self.tr("Reachability"))
         self.reachabilityAction.setCheckable(True)
@@ -54,6 +63,12 @@ class RoutingPlugin(QObject):
         self.tspAction.setCheckable(True)
         self.tspAction.toggled.connect(self.showTSP)
         self.iface.addAction(self.tspAction, self.iface.PLUGIN_MENU, self.iface.ANALYSIS_TAB)
+
+        # Navigation
+        # self.navigationAction = TriStateAction(self.iface)
+        # self.navigationAction.setCheckable(True)
+        # # self.tspAction.toggled.connect(self.showTSP)
+        # self.iface.addAction(self.navigationAction, self.iface.PLUGIN_MENU, self.iface.GPS_TAB)
 
         reg = QgsApplication.pluginLayerRegistry()
         reg.addPluginLayerType(ShortestPathLayerType())
